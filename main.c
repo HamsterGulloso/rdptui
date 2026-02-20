@@ -148,6 +148,8 @@ int main() {
 
     serverarray_init(&sa);
 
+    hostnames = malloc((sa.size+1)*sizeof(char*));
+    usernames = malloc((sa.size+1)*sizeof(char*));
     update_items(&hostnames, &usernames, &sa);
     hostnames[0] = "Hostnames:";
     usernames[0] = "Usernames:";
