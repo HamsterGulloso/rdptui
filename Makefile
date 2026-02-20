@@ -1,5 +1,5 @@
-run: rdpconnect
-	./rdpconnect
+run: rdptui
+	./rdptui
 
-rdpconnect: main.c
-	gcc -o rdpconnect main.c
+rdptui: main.c
+	gcc -o rdptui main.c
