@@ -112,7 +112,7 @@ void fork_xfreerdp(char* hostname, char* username, char* password) {
         username_string = malloc((size+3)*sizeof(char));
         sprintf(username_string, "/u:%s", username);
 
-        size = atoi(password);
+        size = strlen(password);
         password_string = malloc((size+3)*sizeof(char));
         sprintf(password_string, "/p:%s", password);
 
@@ -148,12 +148,9 @@ int main() {
 
     serverarray_init(&sa);
 
-    hostnames = malloc((sa.size+1)*sizeof(char*));
-    usernames = malloc((sa.size+1)*sizeof(char*));
-
+    update_items(&hostnames, &usernames, &sa);
     hostnames[0] = "Hostnames:";
     usernames[0] = "Usernames:";
-    update_items(&hostnames, &usernames, &sa);
 
     tb_init();
 
