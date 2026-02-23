@@ -153,6 +153,31 @@ void position_texts(char** text, int num_texts, float x, float y, int selected_i
     }
 }
 
+int confirm_dialog(){
+    struct tb_event e;
+    char text[] = "Are you sure?(y/n)";
+
+    tb_clear();
+    tb_printf(
+        ((int) tb_width()*0.5) - strlen(text)/2,
+        ((int) tb_height()*0.5),
+        0, 0,
+        text
+    );
+    tb_present();
+
+    do {
+        tb_poll_event(&e);
+
+        if (
+            ((e.ch | 0x20) == 'n') ||
+            e.key == TB_KEY_ESC
+        ) return 0;
+        
+        if ((e.ch | 0x20) == 'y') return 1;
+    } while (1);
+}
+
 int handle_input(char* input_text, char *input) {
     struct tb_event e;
     char* texts[2];
@@ -276,6 +301,7 @@ int main(int argc, char** argv) {
 
         if (
             (e.ch | 0x20) == 'n' ||
+            (e.ch | 0x20) == 'i' ||
             (e.ch | 0x20) == 'a'
         ) {
             hostname = malloc(255*sizeof(char));
@@ -290,6 +316,21 @@ int main(int argc, char** argv) {
             );
             update_items(&hostnames, &usernames, sa);
             storage_save(sa);
+        }
+
+        if (
+            (e.ch | 0x20) == 'x' ||
+            (e.ch | 0x20) == 'r' ||
+            (e.ch | 0x20) == 'd'
+        ) {
+            if (confirm_dialog()) {
+                serverarray_remove(
+                    sa,
+                    selected_option
+                );
+                update_items(&hostnames, &usernames, sa);
+                storage_save(sa);
+            }
         }
 
         if (e.key == TB_KEY_ARROW_UP) {
